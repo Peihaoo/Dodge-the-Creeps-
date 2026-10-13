@@ -28,10 +28,10 @@ one_shot = true
 [node name="StartPosition" type="Position2D" parent="."]
 position = Vector2( 240, 450 )
 
-[node name="Path2D" type="Path2D" parent="."]
+[node name="MobPath" type="Path2D" parent="."]
 curve = SubResource( 1 )
 
-[node name="MobSpawnLocation" type="PathFollow2D" parent="Path2D"]
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [connection signal="body_entered" from="Player" to="." method="_on_Player_body_entered"]
 [connection signal="body_entered" from="Player" to="Player" method="_on_Player_body_entered"]
