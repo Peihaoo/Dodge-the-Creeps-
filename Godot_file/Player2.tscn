@@ -1,0 +1,45 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Anim_Penguin_walk_v1.0_frames/2.png" type="Texture" id=1]
+[ext_resource path="res://Anim_Penguin_glide1_v1.0_frames/2.png" type="Texture" id=2]
+[ext_resource path="res://Anim_Penguin_glide1_v1.0_frames/3.png" type="Texture" id=3]
+[ext_resource path="res://Anim_Penguin_walk_v1.0_frames/1.png" type="Texture" id=4]
+[ext_resource path="res://Anim_Penguin_walk_v1.0_frames/4.png" type="Texture" id=5]
+[ext_resource path="res://Anim_Penguin_glide1_v1.0_frames/4.png" type="Texture" id=6]
+[ext_resource path="res://Anim_Penguin_walk_v1.0_frames/3.png" type="Texture" id=7]
+[ext_resource path="res://Anim_Penguin_glide1_v1.0_frames/1.png" type="Texture" id=8]
+[ext_resource path="res://Player2.gd" type="Script" id=9]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "up",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 1 ), ExtResource( 7 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 6.85714
+height = 4.57143
+
+[node name="Player2" type="Area2D"]
+position = Vector2( 160, 96 )
+scale = Vector2( 3.5, 3.5 )
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[connection signal="body_entered" from="." to="." method="_on_Player2_body_entered"]

@@ -1,25 +1,44 @@
 extends Node
 export(PackedScene) var mob_scene
-var score
+var scoreP1
+var scoreP2
+var p1Over = false
+var p2Over = false
+var singleplayer = false
 
 func _ready():
 	randomize()
-	new_game()
 
 func game_over():
-	$DeathSound.play()
-	$ScoreTimer.stop()
 	$MobTimer.stop()
 	$HUD.show_game_over()
 	$Music.stop()
 
-func new_game():
+func new_game_1P():
 	get_tree().call_group("mobs", "queue_free")
 	$Music.play()
-	$HUD.update_score(score)
 	$HUD.show_message("Get Ready")
-	score = 0
+	scoreP1 = 0
+	p2Over = true
+	p1Over = false
+	$HUD.update_score_p1(scoreP1)
 	$Player.start($StartPosition.position)
+	singleplayer = true
+	$StartTimer.start()
+
+func new_game_2P():
+	get_tree().call_group("mobs", "queue_free")
+	$Music.play()
+	$HUD.show_message("Get Ready")
+	scoreP1 = 0
+	scoreP2 = 0
+	p1Over = false
+	p2Over = false
+	$HUD.update_score_p1(scoreP1)
+	$HUD.update_score_p2(scoreP2)
+	$Player.start($StartPosition.position)
+	$Player2.start($StartPosition_p2.position)
+	singleplayer = false
 	$StartTimer.start()
 
 func _on_MobTimer_timeout():
@@ -44,7 +63,34 @@ func _on_MobTimer_timeout():
 func _on_StartTimer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
+	$ScoreTimer_p2.start()
 
 func _on_ScoreTimer_timeout():
-	score += 1
-	$HUD.update_score(score)
+	scoreP1 += 1
+	$HUD.update_score_p1(scoreP1)
+
+func _on_ScoreTimer_p2_timeout():
+	if !singleplayer:
+		scoreP2 += 1
+		$HUD.update_score_p2(scoreP2)
+
+func p2_game_over():
+	$DeathSound.play()
+	$ScoreTimer_p2.stop()
+	p2Over = true
+	
+	if (p1Over && p2Over):
+		game_over();
+
+
+func p1_game_over():
+	$DeathSound.play()
+	$ScoreTimer.stop()
+	p1Over = true
+	
+	if (p1Over && p2Over):
+		game_over();
+
+
+
+

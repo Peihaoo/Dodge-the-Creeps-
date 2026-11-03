@@ -28,7 +28,7 @@ animations = [ {
 
 [sub_resource type="CapsuleShape2D" id=2]
 radius = 48.0
-height = 24.0
+height = 7.99998
 
 [node name="Mob" type="RigidBody2D" groups=["mobs"]]
 position = Vector2( 85, 85 )
