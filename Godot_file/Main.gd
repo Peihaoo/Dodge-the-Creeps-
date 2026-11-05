@@ -56,6 +56,7 @@ func _on_MobTimer_timeout():
 	mob.rotation = direction
 	# Tria la velocitat de la multitud.
 	var velocity = Vector2(rand_range(150.0, 250.0), 0.0)
+	velocity *= settings.get_speed_multiplier()
 	mob.linear_velocity = velocity.rotated(direction)
 	# Va fer que la multitud s'afegís a l'escena principal.
 	add_child(mob)
@@ -66,13 +67,15 @@ func _on_StartTimer_timeout():
 	$ScoreTimer_p2.start()
 
 func _on_ScoreTimer_timeout():
-	scoreP1 += 1
-	$HUD.update_score_p1(scoreP1)
+	if !settings.zen_mode:
+		scoreP1 += 1
+		$HUD.update_score_p1(scoreP1)
 
 func _on_ScoreTimer_p2_timeout():
-	if !singleplayer:
-		scoreP2 += 1
-		$HUD.update_score_p2(scoreP2)
+	if !settings.zen_mode:
+		if !singleplayer:
+			scoreP2 += 1
+			$HUD.update_score_p2(scoreP2)
 
 func p2_game_over():
 	$DeathSound.play()
@@ -91,6 +94,15 @@ func p1_game_over():
 	if (p1Over && p2Over):
 		game_over();
 
+func return_to_menu():
+	$MobTimer.stop()
+	$ScoreTimer.stop()
+	$ScoreTimer_p2.stop()
+	$StartTimer.stop()
 
+	get_tree().call_group("mobs", "queue_free")
+	$Music.stop()
+
+	$HUD.show_game_over()
 
 

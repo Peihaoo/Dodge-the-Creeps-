@@ -9,6 +9,9 @@ func _ready():
 	hide()
 
 func _on_Player_body_entered(body):
+	if settings.zen_mode:
+		return
+
 	hide() # El jugador desapareix després de ser impactat.
 	emit_signal("hit")
 	# S'ha d'ajornar, ja que no podem canviar les propietats físiques en una crida de retorn de física.
